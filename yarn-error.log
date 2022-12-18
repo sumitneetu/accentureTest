@@ -1,0 +1,60 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js add react-html-attrs
+
+PATH: 
+  /usr/local/opt/php@7.3/sbin:/Users/sumit/Library/Android/sdk/tools:/Users/sumit/Library/Android/sdk/platform-tools:/Users/sumit/‘~/.npm-global/bin:/usr/local/php5-7.2.21-20190811-210031/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/sumit/Library/Android/sdk/tools/bin:/usr/local/go/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  16.14.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/react-html-attrs: Not found
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:140749:22)
+      at Request.emit (node:events:520:28)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:141721:10)
+      at Request.emit (node:events:520:28)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:141643:12)
+      at Object.onceWrapper (node:events:639:28)
+      at IncomingMessage.emit (node:events:532:35)
+      at endReadableNT (node:internal/streams/readable:1346:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "private": true,
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start"
+    },
+    "dependencies": {
+      "next": "latest",
+      "react": "^17.0.2",
+      "react-dom": "^17.0.2",
+      "react-responsive-carousel": "^3.2.23",
+      "tw-elements": "^1.0.0-alpha13"
+    },
+    "devDependencies": {
+      "@types/node": "17.0.4",
+      "@types/react": "17.0.38",
+      "autoprefixer": "^10.4.0",
+      "postcss": "^8.4.5",
+      "prettier": "^2.5.1",
+      "prettier-plugin-tailwindcss": "^0.1.1",
+      "tailwindcss": "^3.0.7",
+      "typescript": "4.5.4"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
