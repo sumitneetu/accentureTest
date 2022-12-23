@@ -1,6 +1,10 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 export const Navbar = (props: any) => {
+  const router = useRouter()
+  const isLogin =
+    typeof window != 'undefined' && !window.localStorage.getItem('token')
   const topMenu = [
     {
       id: 1,
@@ -16,24 +20,29 @@ export const Navbar = (props: any) => {
     },
     {
       id: 4,
-      title: 'CUSTOMER CARE',
+      title: 'DASHBOARD',
+      onclick: () => {
+        router.push('/dashboard')
+      },
     },
-    {
-      id: 5,
-      title: 'TRACK MY ORDER',
-    },
-    {
-      id: 6,
-      title: 'LOGIN',
-    },
-    {
-      id: 7,
-      title: 'SIGNUP',
-    },
-    {
-      id: 7,
-      title: 'TUKAR BAHASA',
-    },
+    ...[
+      isLogin
+        ? {
+            id: 6,
+            title: 'LOGIN',
+            onclick: () => {
+              router.push('/login')
+            },
+          }
+        : {
+            id: 6,
+            title: 'LOGOUT',
+            onclick: () => {
+              window.localStorage.removeItem('token')
+              router.push('/login')
+            },
+          },
+    ],
   ]
   return (
     <div className="">
@@ -47,6 +56,7 @@ export const Navbar = (props: any) => {
                     href="#"
                     className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white dark:text-white md:bg-transparent md:p-0 md:text-orange-500"
                     aria-current="page"
+                    onClick={val?.onclick}
                   >
                     {val.title}
                   </a>

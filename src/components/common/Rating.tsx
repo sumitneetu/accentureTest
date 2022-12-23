@@ -12,8 +12,6 @@ export const Rating = ({
   percentage,
   ratingCount,
 }: RattingProp) => {
-  console.log('yellowStar', yellowStar)
-
   return (
     <div className="flex items-center px-2">
       {yellowStar &&

@@ -10,26 +10,37 @@ class API {
     const cancelTokenSource = axios.CancelToken.source()
     return cancelTokenSource.cancel()
   }
-  static get(route, headers, otherHost, key) {
+  static get(route, headers, otherHost, key, directCall) {
     return this.api({
       requestType: 'get',
       route,
       headers,
       otherHost,
       key,
+      directCall,
     })
   }
-  static post(route, headers, params, data) {
+  static post(route, headers, params, data, directCall) {
     return this.api({
       requestType: 'post',
       route,
       headers,
       params,
       data,
+      directCall,
     })
   }
-  static api({ requestType, route, headers, params, data, otherHost, key }) {
-    const url = `${endpoint.BASE_URL}${route}`
+  static api({
+    requestType,
+    route,
+    headers,
+    params,
+    data,
+    otherHost,
+    key,
+    directCall = false,
+  }) {
+    const url = directCall ? route : `${endpoint.BASE_URL}${route}`
     const baseHeaders = API.headers()
     const axiosInstance = http.create({
       baseURL: url,

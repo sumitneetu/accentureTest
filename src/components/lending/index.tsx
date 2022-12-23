@@ -5,7 +5,7 @@ import Navbar from './../common/nav-bar'
 import SearchBar from '../common/search-bar'
 import Banner from '../common/Banner'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import Products from '../common/product-list'
+import ProductsList from '../common/product-list'
 export const Lendingpage = () => {
   return (
     <>
@@ -19,7 +19,7 @@ export const Lendingpage = () => {
           <Banner />
         </div>
       </div>
-      <Products />
+      <ProductsList />
     </>
   )
 }

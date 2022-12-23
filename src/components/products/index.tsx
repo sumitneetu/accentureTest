@@ -4,7 +4,7 @@ import Categories from '../common/categories'
 import Navbar from './../common/nav-bar'
 import SearchBar from '../common/search-bar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import Products from '../common/product-list'
+import ProductsList from '../common/product-list'
 export const Lendingpage = () => {
   return (
     <>
@@ -16,7 +16,7 @@ export const Lendingpage = () => {
           <Categories />
         </div>
         <div className="w-4/5">
-          <Products />
+          <ProductsList isFilterShow={true} />
         </div>
       </div>
     </>

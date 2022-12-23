@@ -9,6 +9,7 @@ const Categories = (props: any) => {
   useEffect(() => {
     API.get(endpoint?.CATEGORY_LIST, {}, undefined, {})
       .then((res) => {
+        res.push('All Products')
         setCategory(res)
       })
       .catch((error) => {
@@ -17,7 +18,11 @@ const Categories = (props: any) => {
   }, [])
 
   const goToCategoryProducts = (cat: String) => {
-    router.push('/products/' + cat)
+    if (cat == 'All Products') {
+      router.push('/products/')
+    } else {
+      router.push('/products/' + cat)
+    }
   }
 
   return (
@@ -27,7 +32,10 @@ const Categories = (props: any) => {
           categories.map((val: any, key: any) => (
             <div className="menu-item">
               <h4 className="flex">
-                <a href="#" onClick={() => goToCategoryProducts(val)}>
+                <a
+                  href="javascript:void(0)"
+                  onClick={() => goToCategoryProducts(val)}
+                >
                   {val}
                 </a>
               </h4>
