@@ -7,7 +7,7 @@ import { removeProduct, getCart, manageQuantity } from '../../util/cart'
 import Chart from 'chart.js/auto'
 import CartItem from 'components/cart-item'
 
-export const Cart = () => {
+export const Receipts = () => {
   const canvas = useRef()
   const router = useRouter()
   const [cart, setCart] = useState<any>(null)
@@ -178,8 +178,8 @@ export const Cart = () => {
                   <button className="w-full bg-indigo-500 py-3 text-sm font-semibold uppercase text-white hover:bg-indigo-600">
                     Checkout
                   </button>
-                  <button className="w-full bg-indigo-500 py-3 text-sm font-semibold uppercase text-white hover:bg-indigo-600">
-                    Checkout
+                  <button className="mt-2 w-full bg-orange-500 py-3 text-sm font-semibold uppercase text-white hover:bg-orange-600">
+                    Generate Pdf
                   </button>
                 </div>
               </div>
@@ -214,4 +214,4 @@ export const Cart = () => {
     </>
   )
 }
-export default Cart
+export default Receipts

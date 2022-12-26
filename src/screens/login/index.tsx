@@ -7,8 +7,8 @@ import Loading from '../../components/Loading'
 import API from 'framework/api'
 
 interface UserInfo {
-  username: String
-  password: String
+  username: string
+  password: string
 }
 export const Login = () => {
   const [userinfo, setUserInfo] = useState<UserInfo>({

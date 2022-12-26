@@ -3,8 +3,8 @@ import React from 'react'
 interface SortProps {
   sortFn: Function
   sortdata: {
-    limit: String
-    sort: String
+    limit: string
+    sort: string
   }
 }
 
