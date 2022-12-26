@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Navbar from '../common/nav-bar'
-import SearchBar from '../common/search-bar'
+import Navbar from '../../components/nav-bar'
+import SearchBar from '../../components/search-bar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { useRouter } from 'next/router'
-import { removeProduct, getCart, incressQuantity } from '../../util/cart'
+import { removeProduct, getCart, manageQuantity } from '../../util/cart'
 import Chart from 'chart.js/auto'
+import CartItem from 'components/cart-item'
 
 export const Cart = () => {
   const canvas = useRef()
@@ -78,16 +79,19 @@ export const Cart = () => {
     }
   }, [cart])
 
-  const removeProductFromcart = (product: any) => {
+  const removeProductFromcart = (productId: number, total: number) => {
     const products = cart.products.filter((val: any) => {
-      return val?.id != product.id
+      return val?.id != productId
     })
-    const cartTotal = cart?.cartTotal - product?.total
+    const cartTotal = cart?.cartTotal - total
     setCart({ ...cart, products, cartTotal })
-    removeProduct(product)
+    removeProduct(productId, total)
   }
   const customizeQuantity = (product: any, type: string) => {
-    const newCart = incressQuantity(product, type)
+    console.log('heloo')
+    console.log(product)
+    console.log(type)
+    const newCart = manageQuantity(product, type)
     setCart(newCart)
   }
 
@@ -99,11 +103,11 @@ export const Cart = () => {
     <>
       <Navbar />
       <SearchBar />
-      <div className="flex w-full justify-center">
+      <div className="flex w-full justify-center py-10">
         <div className="container w-full">
           {cart && cart?.products.length > 0 && (
-            <div className="my-1 flex w-full">
-              <div className="w-2/3 bg-white px-5 py-10">
+            <div className="my-1 flex w-full justify-between">
+              <div className="w-2/3 bg-white px-10 py-10">
                 <div className="flex justify-between border-b pb-8">
                   <h1 className="text-2xl font-semibold">Shopping Cart</h1>
                   <h2 className="text-2xl font-semibold">
@@ -126,63 +130,16 @@ export const Cart = () => {
                 </div>
                 {cart &&
                   cart.products.map((val: any, key: any) => (
-                    <div
+                    <CartItem
                       key={key}
-                      className="-mx-8 flex items-center px-6 py-5 hover:bg-gray-100"
-                    >
-                      <div className="flex w-2/5">
-                        <div className="w-20">
-                          <img className="h-24" src={val?.image} alt="" />
-                        </div>
-                        <div className="ml-4 flex flex-grow flex-col justify-between">
-                          <span className="w-4/5 text-sm font-bold line-clamp-3">
-                            {val?.title}
-                          </span>
-
-                          <a
-                            href="javascript:void(0)"
-                            onClick={() => removeProductFromcart(val)}
-                            className="text-xs font-semibold text-gray-500 hover:text-red-500"
-                          >
-                            Remove
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="flex w-1/5 justify-center">
-                        <svg
-                          className="w-3 fill-current text-gray-600"
-                          viewBox="0 0 448 512"
-                          onClick={() => customizeQuantity(val, 'decre')}
-                        >
-                          <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                        </svg>
-                        <input
-                          className="mx-2 w-8 border text-center"
-                          type="text"
-                          value={val?.quantity}
-                        />
-
-                        <svg
-                          className="w-3 fill-current text-gray-600"
-                          viewBox="0 0 448 512"
-                          onClick={() => customizeQuantity(val, 'incre')}
-                        >
-                          <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                        </svg>
-                      </div>
-                      <span className="w-1/5 text-center text-sm font-semibold">
-                        ${val?.price}
-                      </span>
-                      <span className="w-1/5 text-center text-sm font-semibold">
-                        ${val?.total.toFixed(2)}
-                      </span>
-                    </div>
+                      {...val}
+                      customizeQuantity={customizeQuantity}
+                      removeProductFrpmCart={removeProductFromcart}
+                    />
                   ))}
-
                 <a
                   href="#"
-                  className="mt-10 flex text-sm font-semibold text-indigo-600"
+                  className="mt-10 flex  text-sm font-semibold text-indigo-600"
                   onClick={() => router.push('/')}
                 >
                   <svg
@@ -195,11 +152,12 @@ export const Cart = () => {
                 </a>
               </div>
 
-              <div id="summary" className="w-1/3 justify-center py-10">
+              <div className="w-1/3 justify-center py-10">
                 <h1 className="border-b pb-8 text-2xl font-semibold">
                   Order Summary
                 </h1>
-                <p className="w-full text-center ">Price Price Chart</p>
+                <p className="w-full text-center ">Price Pie Chart</p>
+
                 <div className="flex w-4/5 flex-row items-center justify-center py-4 px-4">
                   <canvas id="myChart" ref={canvas}></canvas>
                 </div>
@@ -211,12 +169,15 @@ export const Cart = () => {
                     {cart?.cartTotal.toFixed(2)}$
                   </span>
                 </div>
-                <div className="mt-8 border-t">
+                <div class="mb-8 border-t">
                   <div className="flex justify-between py-6 text-sm font-semibold uppercase">
                     <span>Total cost</span>
                     <span>${cart?.cartTotal.toFixed(2)}</span>
                   </div>
 
+                  <button className="w-full bg-indigo-500 py-3 text-sm font-semibold uppercase text-white hover:bg-indigo-600">
+                    Checkout
+                  </button>
                   <button className="w-full bg-indigo-500 py-3 text-sm font-semibold uppercase text-white hover:bg-indigo-600">
                     Checkout
                   </button>

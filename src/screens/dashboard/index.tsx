@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Navbar from './../common/nav-bar'
-import SearchBar from '../common/search-bar'
+import Navbar from '../../components/nav-bar'
+import SearchBar from '../../components/search-bar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import API from 'framework/api'
 import { UserInfo } from './user'
-import Loading from 'components/common/Loading'
+import Loading from '../../components/Loading'
 import { formatDate } from './../../util/Utility'
 
 export const Login = () => {

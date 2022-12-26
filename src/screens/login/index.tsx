@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import Navbar from './../common/nav-bar'
-import SearchBar from '../common/search-bar'
+import Navbar from '../../components/nav-bar'
+import SearchBar from '../../components/search-bar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { endpoint } from 'framework/config'
-import Loading from './../common/Loading'
+import Loading from '../../components/Loading'
 import API from 'framework/api'
 
 interface UserInfo {

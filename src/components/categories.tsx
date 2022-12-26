@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { endpoint } from '../../framework/config'
-import API from '../../framework/api'
+import { endpoint } from '../framework/config'
+import API from '../framework/api'
 import { useRouter } from 'next/router'
 
 const Categories = (props: any) => {

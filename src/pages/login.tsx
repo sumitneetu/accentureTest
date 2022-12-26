@@ -1,2 +1,2 @@
-import Login from '../components/login'
+import Login from './../screens/login'
 export default Login

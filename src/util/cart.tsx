@@ -51,12 +51,12 @@ export const addProduct = (product: Product) => {
   return product
 }
 
-export const removeProduct = (product: Product) => {
+export const removeProduct = (productId: Number, total: number) => {
   const cartData = JSON.parse(window.localStorage.getItem('cart') || '')
   const products = cartData.products.filter((val: any) => {
-    return val.id !== product.id
+    return val.id !== productId
   })
-  const cartTotal = cartData?.cartTotal - product?.total
+  const cartTotal = cartData?.cartTotal - total
   cartData['products'] = products
   cartData['cartTotal'] = cartTotal
   window.localStorage.setItem('cart', JSON.stringify(cartData))
@@ -68,7 +68,7 @@ export const getCart = () => {
   return cartData
 }
 
-export const incressQuantity = (product: Product, type: string) => {
+export const manageQuantity = (productId: Number, type: string) => {
   let removeProductFlag = false
   let cartData =
     typeof window !== 'undefined' &&
@@ -76,7 +76,7 @@ export const incressQuantity = (product: Product, type: string) => {
   let products = cartData?.products?.map((val: Product) => {
     let quantity = val?.quantity
     let total = val?.total
-    if (val?.id == product?.id) {
+    if (val?.id == productId) {
       if (quantity == 1 && type == 'decre') {
         removeProductFlag = true
       } else {
@@ -91,7 +91,7 @@ export const incressQuantity = (product: Product, type: string) => {
     }
   })
   products = removeProductFlag
-    ? products.filter((val: any) => val.id != product.id)
+    ? products.filter((val: any) => val.id != productId)
     : products
   const cartTotal = products.reduce((acc: number, val: any) => {
     return acc + val.total
@@ -99,12 +99,5 @@ export const incressQuantity = (product: Product, type: string) => {
   cartData['cartTotal'] = products.length == 0 ? 0 : cartTotal
   cartData['products'] = products
   window.localStorage.setItem('cart', JSON.stringify(cartData))
-  return cartData
-}
-
-export const desscressQuantity = () => {
-  const cartData =
-    typeof window !== 'undefined' &&
-    JSON.parse(window.localStorage.getItem('cart') || '')
   return cartData
 }
