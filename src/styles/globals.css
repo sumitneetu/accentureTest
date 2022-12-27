@@ -148,3 +148,7 @@
                 transform: rotate(360deg);
             }
         }
+
+.min-text-height {
+    min-height: 31px;
+}

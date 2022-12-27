@@ -5,9 +5,9 @@ import Loading from './Loading'
 import Rating from './Rating'
 import SortComponent from './sort-component'
 import { getProductListUrl, formatDate } from './../util/Utility'
-import { addProduct } from '../util/cart'
-import { endpoint } from 'framework/config'
+import { addProduct, getCart } from '../util/cart'
 import Toast from './Toast'
+import CartButton from './cart-button'
 
 interface ProductProps {
   isFilterShow?: boolean
@@ -16,12 +16,13 @@ interface ProductProps {
 const ProductsList = ({ isFilterShow }: ProductProps) => {
   const router = useRouter()
   const { category } = router.query
+  const [cartCount, setCartCount] = useState<number>(0)
   const [products, setProducts] = useState<any>([])
   const [isLoading, setLoading] = useState(false)
   const [isCartPopup, setCartPopup] = useState(false)
   const [sort, setSort] = useState<string>('')
   const [limit, setLimit] = useState<string>('')
-  const userId = 2
+  const cart = getCart()
   useEffect(() => {
     let productUrl = getProductListUrl(category, limit, sort)
     console.log('productUrl', productUrl)
@@ -67,6 +68,7 @@ const ProductsList = ({ isFilterShow }: ProductProps) => {
       total: product.price,
     }
     addProduct(newProduct)
+
     setCartPopup(true)
     setTimeout(() => {
       setCartPopup(false)
@@ -76,19 +78,17 @@ const ProductsList = ({ isFilterShow }: ProductProps) => {
     }
   }
 
+  useEffect(() => {
+    if (cart && cart?.products?.length > 0) {
+      setCartCount(cart?.products?.length)
+    }
+  }, [cart])
+
   return (
     <>
       <Loading isLoading={isLoading} />
-      <div className="top-200 fixed right-0 z-50">
-        <button
-          onClick={() => router.push('/receipts')}
-          type="button"
-          className="mr-2 mb-2 inline-flex items-center rounded-lg bg-[#FF9119] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#FF9119]/80 focus:outline-none focus:ring-4 focus:ring-[#FF9119]/50 dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40"
-        >
-          Go To Cart
-        </button>
-      </div>
       <Toast isShow={isCartPopup} />
+      <CartButton cartCount={cartCount} />
       {!isLoading && (
         <div className="bg-white">
           <div className="flex justify-between px-8 py-4">
@@ -127,7 +127,7 @@ const ProductsList = ({ isFilterShow }: ProductProps) => {
                         className="object-cover object-center group-hover:opacity-75"
                       />
                     </div>
-                    <p className="min-h-31 px-2 text-xs line-clamp-2">
+                    <p className="min-h-31 min-text-height px-2 text-xs line-clamp-2">
                       {val.title}
                     </p>
                     <p className="mt-1 px-2 text-lg font-medium text-orange-900">

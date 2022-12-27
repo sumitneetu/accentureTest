@@ -19,8 +19,8 @@ export const Rating = ({
           <svg className="h-4 w-4" viewBox="0 0 32 32">
             <defs>
               <linearGradient id="yellow">
-                <stop offset="100%" stop-color="#ffc107" />
-                <stop offset="0%" stop-color="#adb5bd" />
+                <stop offset="100%" stopColor="#ffc107" />
+                <stop offset="0%" stopColor="#adb5bd" />
               </linearGradient>
             </defs>
             <path
@@ -38,8 +38,8 @@ export const Rating = ({
               sds
               <defs>
                 <linearGradient id="gray">
-                  <stop offset={`${percentage}%`} stop-color="#ffc107" />
-                  <stop offset={`${100 - percentage}%`} stop-color="#adb5bd" />
+                  <stop offset={`${percentage}%`} stopColor="#ffc107" />
+                  <stop offset={`${100 - percentage}%`} stopColor="#adb5bd" />
                 </linearGradient>
               </defs>
               <path
@@ -52,7 +52,7 @@ export const Rating = ({
             <svg className="h-4 w-4" viewBox="0 0 32 32">
               <defs>
                 <linearGradient id="grayy">
-                  <stop offset="100%" stop-color="#adb5bd" />
+                  <stop offset="100%" stopColor="#adb5bd" />
                 </linearGradient>
               </defs>
               <path

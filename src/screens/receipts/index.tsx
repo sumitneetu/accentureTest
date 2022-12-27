@@ -3,26 +3,32 @@ import Navbar from '../../components/nav-bar'
 import SearchBar from '../../components/search-bar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { useRouter } from 'next/router'
-import { removeProduct, getCart, manageQuantity } from '../../util/cart'
+import {
+  removeProduct,
+  getCart,
+  manageQuantity,
+  setOrderId,
+} from '../../util/cart'
+import { uniqueID } from '../../util/Utility'
 import Chart from 'chart.js/auto'
 import CartItem from 'components/cart-item'
 
 export const Receipts = () => {
-  const canvas = useRef()
+  const canvas = React.useRef<HTMLCanvasElement>(null)
   const router = useRouter()
   const [cart, setCart] = useState<any>(null)
   const c = typeof window !== 'undefined' && window.localStorage.getItem('cart')
   const userId = 2
   useEffect(() => {
-    console.log('change')
     const cartData = getCart()
+    console.log('change', cartData)
     setCart(cartData)
   }, [c])
 
   useEffect(() => {
     if (cart && cart?.products?.length > 0) {
       console.log('cominggg ')
-      const ctx = canvas.current
+      const ctx: any = canvas.current
       let chartStatus = Chart.getChart('myChart')
       if (chartStatus !== undefined) {
         chartStatus.destroy()
@@ -69,7 +75,6 @@ export const Receipts = () => {
             legend: {
               display: false,
               labels: {
-                display: false,
                 color: 'rgb(255, 99, 132)',
               },
             },
@@ -88,16 +93,14 @@ export const Receipts = () => {
     removeProduct(productId, total)
   }
   const customizeQuantity = (product: any, type: string) => {
-    console.log('heloo')
-    console.log(product)
-    console.log(type)
     const newCart = manageQuantity(product, type)
     setCart(newCart)
   }
-
-  useEffect(() => {
-    console.log('dddd')
-  }, [cart])
+  const checkout = () => {
+    const orderId = uniqueID()
+    setOrderId(orderId)
+    router.push('/checkout')
+  }
 
   return (
     <>
@@ -118,13 +121,13 @@ export const Receipts = () => {
                   <h3 className="w-2/5 text-xs font-semibold uppercase text-gray-600">
                     Product Details
                   </h3>
-                  <h3 className="w-1/5 text-center text-center text-xs font-semibold uppercase text-gray-600">
+                  <h3 className="w-1/5 text-center  text-xs font-semibold uppercase text-gray-600">
                     Quantity
                   </h3>
-                  <h3 className="w-1/5 text-center text-center text-xs font-semibold uppercase text-gray-600">
+                  <h3 className="w-1/5 text-center  text-xs font-semibold uppercase text-gray-600">
                     Price
                   </h3>
-                  <h3 className="w-1/5 text-center text-center text-xs font-semibold uppercase text-gray-600">
+                  <h3 className="w-1/5 text-center  text-xs font-semibold uppercase text-gray-600">
                     Total
                   </h3>
                 </div>
@@ -133,6 +136,7 @@ export const Receipts = () => {
                     <CartItem
                       key={key}
                       {...val}
+                      pdfTemp
                       customizeQuantity={customizeQuantity}
                       removeProductFrpmCart={removeProductFromcart}
                     />
@@ -169,46 +173,45 @@ export const Receipts = () => {
                     {cart?.cartTotal.toFixed(2)}$
                   </span>
                 </div>
-                <div class="mb-8 border-t">
+                <div className="mb-8 border-t">
                   <div className="flex justify-between py-6 text-sm font-semibold uppercase">
                     <span>Total cost</span>
                     <span>${cart?.cartTotal.toFixed(2)}</span>
                   </div>
 
-                  <button className="w-full bg-indigo-500 py-3 text-sm font-semibold uppercase text-white hover:bg-indigo-600">
+                  <button
+                    onClick={checkout}
+                    className="w-full bg-indigo-500 py-3 text-sm font-semibold uppercase text-white hover:bg-indigo-600"
+                  >
                     Checkout
-                  </button>
-                  <button className="mt-2 w-full bg-orange-500 py-3 text-sm font-semibold uppercase text-white hover:bg-orange-600">
-                    Generate Pdf
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {!cart ||
-            (cart?.products?.length == 0 && (
-              <div className="flex w-full flex-col justify-center py-10">
-                <p className="text-center">
-                  Your cart is empty please add some products!
-                </p>
-                <div className="flex w-full justify-center text-center">
-                  <a
-                    href="#"
-                    className="flex text-center text-sm font-semibold text-indigo-600"
-                    onClick={() => router.push('/')}
+          {!cart && (
+            <div className="flex w-full flex-col justify-center py-10">
+              <p className="text-center">
+                Your cart is empty please add some products!
+              </p>
+              <div className="flex w-full justify-center text-center">
+                <a
+                  href="#"
+                  className="flex text-center text-sm font-semibold text-indigo-600"
+                  onClick={() => router.push('/')}
+                >
+                  <svg
+                    className="mr-2 w-4 fill-current text-indigo-600"
+                    viewBox="0 0 448 512"
                   >
-                    <svg
-                      className="mr-2 w-4 fill-current text-indigo-600"
-                      viewBox="0 0 448 512"
-                    >
-                      <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
-                    </svg>
-                    Continue Shopping
-                  </a>
-                </div>
+                    <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
+                  </svg>
+                  Continue Shopping
+                </a>
               </div>
-            ))}
+            </div>
+          )}
         </div>
       </div>
     </>

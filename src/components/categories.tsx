@@ -30,7 +30,7 @@ const Categories = (props: any) => {
       <div className="navbar">
         {categories &&
           categories.map((val: any, key: any) => (
-            <div className="menu-item">
+            <div className="menu-item" key={key}>
               <h4 className="flex">
                 <a
                   href="javascript:void(0)"

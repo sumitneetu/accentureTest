@@ -51,7 +51,7 @@ export const Navbar = (props: any) => {
           <div className="md:block md:w-auto" id="navbar-default">
             <ul className="mt-4 flex flex-col rounded-lg bg-transparent p-1 dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:text-xs">
               {topMenu.map((val, key) => (
-                <li>
+                <li key={key}>
                   <a
                     href="#"
                     className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white dark:text-white md:bg-transparent md:p-0 md:text-orange-500"

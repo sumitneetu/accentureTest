@@ -8,9 +8,10 @@ interface Product {
 }
 
 export const addProduct = (product: Product) => {
+  let cart
   if (typeof window !== 'undefined') {
     const c = window.localStorage.getItem('cart')
-    let cart = c != null && JSON.parse(c || '')
+    cart = c != null && JSON.parse(c || '')
     if (
       cart &&
       typeof cart !== 'undefined' &&
@@ -48,7 +49,7 @@ export const addProduct = (product: Product) => {
     window.localStorage.setItem('cart', JSON.stringify(cart))
   }
 
-  return product
+  return cart
 }
 
 export const removeProduct = (productId: Number, total: number) => {
@@ -63,9 +64,8 @@ export const removeProduct = (productId: Number, total: number) => {
 }
 export const getCart = () => {
   const cartData =
-    typeof window !== 'undefined' &&
-    JSON.parse(window.localStorage.getItem('cart') || '')
-  return cartData
+    (typeof window !== 'undefined' && window.localStorage.getItem('cart')) || ''
+  return cartData && JSON.parse(cartData)
 }
 
 export const manageQuantity = (productId: Number, type: string) => {
@@ -98,6 +98,16 @@ export const manageQuantity = (productId: Number, type: string) => {
   }, 0)
   cartData['cartTotal'] = products.length == 0 ? 0 : cartTotal
   cartData['products'] = products
+  window.localStorage.setItem('cart', JSON.stringify(cartData))
+  return cartData
+}
+
+export const setOrderId = (id: number) => {
+  const cartData =
+    (typeof window !== 'undefined' &&
+      JSON.parse(window.localStorage.getItem('cart') || '')) ||
+    null
+  cartData['orderid'] = id
   window.localStorage.setItem('cart', JSON.stringify(cartData))
   return cartData
 }
